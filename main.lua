@@ -1,8 +1,17 @@
+--///////////////////////////////
+-- Déclaration des variable
+--///////////////////////////////
+
 ScreenHeight = love.graphics.getHeight()
 ScreenWidth = love.graphics.getWidth()
 
+  Horizontal = false
+  Vertical = false
 
 
+--///////////////////////////////
+-- Horizontal loop
+--///////////////////////////////
 backGreen = {}
 
 backGreen.Sprite = love.graphics.newImage("Background/Backgreen.png")
@@ -53,31 +62,35 @@ backPil.ScaleW = 3
 backPil.ScaleH = 2.8
 backPil.OY = backPil.Hauteur
 
+--///////////////////////////////
+-- Vertical loop
+--///////////////////////////////
+backDesert= {}
 
+backDesert.Sprite = love.graphics.newImage("Background/BackDesert.png")
+backDesert.Width = ScreenWidth
+backDesert.Height = ScreenHeight
+backDesert.PosY = 0
+backDesert.Move = 0
+backDesert.ScaleW = 3.2
+backDesert.ScaleH = 2.3
 
+--///////////////////////////////
+-- Liste des fonctions
+--///////////////////////////////
 
-
-
-
-
-
-function love.load()
+function HorizontalLoop() 
   
-  
-  
-end
 
-
-function love.update(dt)
-  -- Fond vert
-  backGreen.PosX = backGreen.PosX - 100 *dt
+    -- Fond vert
+  backGreen.PosX = backGreen.PosX - 1 --*dt
   
     if backGreen.PosX <= -ScreenWidth then
     backGreen.PosX = 0
   end
   
    -- Fond Pillar
-  backPil.PosX = backPil.PosX - 100.5 *dt
+  backPil.PosX = backPil.PosX - 1.5 --*dt
   
     if backPil.PosX <= -ScreenWidth then
     backPil.PosX = 0
@@ -85,7 +98,7 @@ function love.update(dt)
   
     -- Ruine 2 
   
-      backRuin.PosX = backRuin.PosX - 300.2 *dt
+      backRuin.PosX = backRuin.PosX - 3.2 --*dt
   
     if backRuin.PosX <= -ScreenWidth then
     backRuin.PosX = 0
@@ -93,15 +106,57 @@ function love.update(dt)
   
   -- Bâtiments
   
-    backBat.PosX = backBat.PosX - 500.5 *dt
+    backBat.PosX = backBat.PosX - 5.5 --*dt
   
     if backBat.PosX <= -ScreenWidth then
     backBat.PosX = 0
    end
   
+end
 
+function VerticalLoop()
+  backDesert.PosY = backDesert.PosY -5
   
+  if backDesert.PosY <= -ScreenHeight then
+    backDesert.PosY = 0
+  end
+end
+
+
+
+function love.load()
   
+  HorizontalLoop() 
+  
+end
+
+
+function love.update(dt)
+  
+if love.keyboard.isDown("a") then
+  
+  Horizontal = true
+
+end
+
+if love.keyboard.isDown("z") then
+  
+  Horizontal = false
+
+end
+
+if Horizontal == true then
+  
+  HorizontalLoop() 
+  
+end
+
+if Horizontal == false then
+  
+  VerticalLoop() 
+  
+end
+
   
   
 end
@@ -110,9 +165,8 @@ end
 
 
 function love.draw()
-
   
-  
+  if Horizontal then 
   --élement fond vert 
 love.graphics.draw(backGreen.Sprite,backGreen.PosX,0,0,backGreen.ScaleW,backGreen.ScaleH)
 love.graphics.draw(backGreen.Sprite,backGreen.PosX + ScreenWidth,0,0,3,3.8)
@@ -129,8 +183,17 @@ love.graphics.draw(backRuin.Sprite,backRuin.PosX + ScreenWidth,backRuin.PosY,0,b
 love.graphics.draw(backBat.Sprite,backBat.PosX,backBat.PosY,0,backBat.ScaleW,backBat.ScaleH,0,backBat.OY)
 love.graphics.draw(backBat.Sprite,backBat.PosX + ScreenWidth,backBat.PosY,0,backBat.ScaleW,backBat.ScaleH,0,backBat.OY)
   
-
   
-  love.graphics.print("position x = "..backBat.PosX)
+  love.graphics.print("Press Z for Vertical Loop",0,0)
+else
+  love.graphics.draw(backDesert.Sprite,0,backDesert.PosY,0,backDesert.ScaleW,backDesert.ScaleH)
+  love.graphics.draw(backDesert.Sprite,0,backDesert.PosY + ScreenHeight,0,backDesert.ScaleW,backDesert.ScaleH)
+  love.graphics.print("Press A for Horizontal Loop",0,0)
+end
+
+
+
+
+
 
 end
